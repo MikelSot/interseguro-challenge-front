@@ -1,12 +1,12 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import { Matriz, Result } from "../interfaces/matriz";
+import { MatrixData, Result } from "../interfaces/matrix";
 
 const MatrizProviderContext = createContext({} as MatrizProviderContextProps);
 
 const MatrizProvider = ({ children }: MatrizProviderProps) => {
   const [columns, setColumns] = useState(0);
   const [rows, setRows] = useState(0);
-  const [data, setData] = useState<Matriz>({} as Matriz);
+  const [data, setData] = useState<MatrixData>({} as MatrixData);
 
   const matrizQ = data.q;
   const matrizR = data.r;
@@ -43,8 +43,8 @@ type MatrizProviderContextProps = {
   setColumns: (columns: number) => void;
   rows: number;
   setRows: (rows: number) => void;
-  data: Matriz;
-  setData: (data: Matriz) => void;
+  data: MatrixData;
+  setData: (data: MatrixData) => void;
   matrizQ: number[][];
   matrizR: number[][];
   resultQ: Result;

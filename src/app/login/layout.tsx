@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Iniciar sesión",
-  description: "Inicia sesión en la plataforma",
+  description: "Inicia sesión en la app",
 };
 
 const LoginLayout = ({ children }: LoginLayoutProps) => {

@@ -1,4 +1,4 @@
-import { Result } from "@/common/interfaces/matriz";
+import { Result } from "@/common/interfaces/matrix";
 import React from "react";
 
 const MatrizResult = ({ type, result }: MatrizResultProps) => {

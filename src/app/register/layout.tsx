@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Registrarse",
-  description: "Regístrate en la plataforma",
+  description: "Regístrate en la app",
 };
 
 const RegisterLayout = ({ children }: RegisterLayoutProps) => {

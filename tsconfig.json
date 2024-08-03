@@ -19,7 +19,6 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      // "@/components/*": ["./src/components/*"],
       "@/common/*": ["./src/common/*"],
       "@/modules/*": ["./src/modules/*"],
       "@/pages/*": ["./src/pages/*"],

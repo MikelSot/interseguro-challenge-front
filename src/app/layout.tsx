@@ -4,6 +4,8 @@ import classNames from "classnames";
 import "@/styles/globals.scss";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import { ReactNode } from "react"
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,14 +17,14 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="es">
       <body className={classNames(inter.className, "text-slate-700")}>
         <ToastContainer position="bottom-right" />
         {children}
       </body>
     </html>
-  );
+  )
 }

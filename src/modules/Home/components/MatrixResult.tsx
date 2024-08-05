@@ -1,7 +1,7 @@
 import { Result } from "@/common/interfaces/matrix";
 import React from "react";
 
-const MatrizResult = ({ type, result }: MatrizResultProps) => {
+const MatrixResult = ({ type, result }: MatrixResultProps) => {
   if (!result) return null;
 
   return (
@@ -18,9 +18,9 @@ const MatrizResult = ({ type, result }: MatrizResultProps) => {
   );
 };
 
-type MatrizResultProps = {
+type MatrixResultProps = {
   type: string;
   result: Result;
 };
 
-export default MatrizResult;
+export default MatrixResult;

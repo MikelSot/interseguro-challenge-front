@@ -1,36 +1,53 @@
-import { useRouter } from "next/router";
-import { ReactNode, useEffect, useState } from "react";
-import { isAuthenticated, removeExpiredToken } from "../helpers/auth.helper";
+import { useRouter } from "next/router"
+import { ReactNode, useEffect, useState } from "react"
+import jsCookie from "js-cookie";
+import {TOKEN_NAME} from "@/common/constants/cookies";
+import {PRIVATE_ROUTER, PUBLIC_ROUTES} from "@/common/constants/router";
 
 const AuthWrapper = ({ children }: AuthWrapperProps) => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+
+  const [isLogin, setIsLogin] = useState(false)
+
+  const token = jsCookie.get(TOKEN_NAME as string)
 
   useEffect(() => {
-    removeExpiredToken();
+    if (token) {
+      setIsLogin(true)
 
-    const checkAuth = () => {
-      const isAuth = isAuthenticated();
+      return
+    }
 
-      if (!isAuth) {
-        router.push("/login");
-      } else {
-        setLoading(false);
-      }
-    };
+    setIsLogin(false)
+  }, [token])
 
-    checkAuth();
-  }, [router]);
 
-  if (loading) {
-    return <div>Loading...</div>;
+  console.log("isLogin")
+  console.log(isLogin)
+  console.log(token)
+
+
+  const path = router.asPath
+
+  if (!isLogin && PRIVATE_ROUTER.includes(path)) {
+    router.push('/login')
   }
 
-  return <>{children}</>;
-};
+
+  if (!isLogin && PUBLIC_ROUTES.includes(path)) {
+    router.push(path)
+  }
+
+
+  if (isLogin) {
+    return <div>Loading...</div>
+  }
+
+  return <>{children}</>
+}
 
 type AuthWrapperProps = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 export default AuthWrapper;

@@ -1,14 +1,14 @@
 import ButtonBase from "@/common/components/atoms/buttons/ButtonBase";
 import InputForm from "@/common/components/atoms/form/InputForm";
-import { useMatrizProviderContext } from "@/common/providers/MatrizProvider";
+import { useMatrixContext } from "@/common/providers/Matrix";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { GenerateBoardFormValues } from "../HomeView";
 import { GenerateBoardFormSchema } from "../schemas/generateBoardFormSchema";
 
-const MatrizForm = () => {
-  const { setColumns, setRows, matrizQ, matrizR } = useMatrizProviderContext();
+const MatrixForm = () => {
+  const { setColumns, setRows, matrixQ, matrixR } = useMatrixContext();
 
   const {
     register,
@@ -71,19 +71,19 @@ const MatrizForm = () => {
         />
       </form>
       <div className="grid grid-cols-2 border rounded divide-x overflow-auto text-sm">
-        {matrizQ && (
+        {matrixQ && (
           <div className="p-4 overflow-auto">
             <h3 className="font-semibold">Factorización Q</h3>
             <pre style={{ whiteSpace: "pre" }}>
-              <code>{`q: ${formatMatrix(matrizQ)}`}</code>
+              <code>{`q: ${formatMatrix(matrixQ)}`}</code>
             </pre>
           </div>
         )}
-        {matrizR && (
+        {matrixR && (
           <div className="p-4 overflow-auto">
             <h3 className="font-semibold">Factorización R</h3>
             <pre style={{ whiteSpace: "pre" }}>
-              <code>{`r: ${formatMatrix(matrizR)}`}</code>
+              <code>{`r: ${formatMatrix(matrixR)}`}</code>
             </pre>
           </div>
         )}
@@ -92,4 +92,4 @@ const MatrizForm = () => {
   );
 };
 
-export default MatrizForm;
+export default MatrixForm;

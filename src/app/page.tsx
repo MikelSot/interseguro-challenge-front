@@ -1,22 +1,24 @@
-"use client";
+"use client"
 
-import dynamic from "next/dynamic";
+import dynamic from "next/dynamic"
 
 const HomeView = dynamic(() => import("@/modules/Home/HomeView"), {
   ssr: false,
-});
+})
 
-const MatrizProvider = dynamic(
-  () => import("@/common/providers/MatrizProvider"),
+const MatrixProvider = dynamic(
+  () => import("@/common/providers/Matrix"),
   {
     ssr: false,
   }
-);
+)
 
-export default function Home() {
+const Home =()  =>{
   return (
-    <MatrizProvider>
+    <MatrixProvider>
       <HomeView />
-    </MatrizProvider>
+    </MatrixProvider>
   );
 }
+
+export default Home

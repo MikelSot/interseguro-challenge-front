@@ -1,15 +1,14 @@
 import ButtonBase from "@/common/components/atoms/buttons/ButtonBase";
 import InputForm from "@/common/components/atoms/form/InputForm";
-import { post } from "@/common/helpers/petitions";
-import { useMatrizProviderContext } from "@/common/providers/MatrizProvider";
+import { useMatrixContext } from "@/common/providers/Matrix";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const Matriz = () => {
+const Matrix = () => {
   const [dataNumbers, setDataNumbers] = useState<number[][]>([]);
 
-  const { columns, rows, setData } = useMatrizProviderContext();
+  const { columns, rows, setData } = useMatrixContext();
 
   useEffect(() => {
     const newData = Array.from({ length: rows }, () => Array(columns).fill(0));
@@ -145,4 +144,4 @@ const Matriz = () => {
   );
 };
 
-export default Matriz;
+export default Matrix;

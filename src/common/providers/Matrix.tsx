@@ -1,21 +1,21 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { MatrixData, Result } from "../interfaces/matrix";
 
-const MatrizProviderContext = createContext({} as MatrizProviderContextProps);
+const MatrixContext = createContext({} as MatrixContextProps);
 
-const MatrizProvider = ({ children }: MatrizProviderProps) => {
+const MatrixProvider = ({ children }: MatrixProps) => {
   const [columns, setColumns] = useState(0);
   const [rows, setRows] = useState(0);
   const [data, setData] = useState<MatrixData>({} as MatrixData);
 
-  const matrizQ = data.q;
-  const matrizR = data.r;
+  const matrixQ = data.q;
+  const matrixR = data.r;
 
   const resultQ = data.result_Q;
   const resultR = data.result_R;
 
   return (
-    <MatrizProviderContext.Provider
+    <MatrixContext.Provider
       value={{
         columns,
         setColumns,
@@ -23,34 +23,34 @@ const MatrizProvider = ({ children }: MatrizProviderProps) => {
         setRows,
         data,
         setData,
-        matrizQ,
-        matrizR,
+        matrixQ: matrixQ,
+        matrixR: matrixR,
         resultQ,
         resultR,
       }}
     >
       {children}
-    </MatrizProviderContext.Provider>
+    </MatrixContext.Provider>
   );
 };
 
-type MatrizProviderProps = {
+type MatrixProps = {
   children: ReactNode;
 };
 
-type MatrizProviderContextProps = {
+type MatrixContextProps = {
   columns: number;
   setColumns: (columns: number) => void;
   rows: number;
   setRows: (rows: number) => void;
   data: MatrixData;
   setData: (data: MatrixData) => void;
-  matrizQ: number[][];
-  matrizR: number[][];
+  matrixQ: number[][];
+  matrixR: number[][];
   resultQ: Result;
   resultR: Result;
 };
 
-export const useMatrizProviderContext = () => useContext(MatrizProviderContext);
+export const useMatrixContext = () => useContext(MatrixContext);
 
-export default MatrizProvider;
+export default MatrixProvider;

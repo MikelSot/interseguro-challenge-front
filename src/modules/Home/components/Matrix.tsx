@@ -99,7 +99,7 @@ const Matrix = () => {
           { grayscale: !rows || !columns },
           "col-span-full hover:bg-blue-600 dark:hover:bg-blue-400 w-full transition-colors"
         )}
-        text="Calcular factorización QR"
+        text={isPending ? "...cargando" :"Calcular factorización QR"}
         onClick={handleSubmit}
         disabled={!rows || !columns}
       />

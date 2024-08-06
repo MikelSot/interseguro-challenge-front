@@ -1,38 +1,47 @@
 import ButtonBase from "@/common/components/atoms/buttons/ButtonBase";
 import InputForm from "@/common/components/atoms/form/InputForm";
-import { login } from "@/common/helpers/auth.helper";
+import { setToken } from "@/common/helpers/auth";
 import { joiResolver } from "@hookform/resolvers/joi";
 import classNames from "classnames";
 import { useForm } from "react-hook-form";
-import { LoginFormSchema } from "../schemas/loginFormSchema";
-
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSIsImlhdCI6MTYzNjIwNjQwMCwiZXhwIjoxNjM2MjA2NDAwfQ.1Z0ZQv5rLZ4Z7j1e9u4w1B2Y2vzQ8T3Q5x9tqLpHbWU";
+import { LoginFormSchema } from "../schemas/login";
+import {useMutation} from "@tanstack/react-query";
+import {login} from "@/common/api/api-gateway";
+import {toast} from "react-toastify";
 
 const LoginForm = () => {
   const {
     register,
     handleSubmit: onSubmit,
     formState: { errors },
-  } = useForm<LoginFormValues>({
+  } = useForm<LoginFormProps>({
     resolver: joiResolver(LoginFormSchema),
     mode: "onChange",
   });
 
-  const handleSubmit = async ({
-    email,
-    password,
-  }: LoginFormValues): Promise<void> => {
-    try {
-      console.log({ email, password });
 
-      login(token);
 
-      window.location.href = "/";
-    } catch (error) {
-      console.error("Error al iniciar sesión:", error);
-    }
-  };
+  const {mutate, isPending} = useMutation(
+      {
+        mutationFn: async (data: LoginFormProps) =>await login(data.email, data.password),
+        onSuccess: (data) => {
+          toast.success("Sesión iniciada 🎉")
+          setToken(data.token)
+          window.location.href = "/";
+        },
+        onError: () => {
+          toast.error("Error al iniciar sesión")
+        }
+      }
+  )
+
+  const handleSubmit = async (data: LoginFormProps) => {
+    mutate(data)
+  }
+
+  if (isPending) {
+    toast.info("Cargando ...")
+  }
 
   return (
     <>
@@ -68,15 +77,13 @@ const LoginForm = () => {
           type="submit"
           className="hover:bg-blue-600 dark:hover:bg-blue-400 w-full transition-colors"
           text="Iniciar sesión"
-          // text={isLoading ? "Cargando..." : "Iniciar sesión"}
-          // disabled={isLoading}
         />
       </form>
     </>
   );
 };
 
-type LoginFormValues = {
+type LoginFormProps = {
   email: string;
   password: string;
 };

@@ -19,6 +19,6 @@ export default class ApiGateway extends HttpRequest {
             endpoint: 'qr/api/v1/challenge',
         })
 
-        return await this.post({ matrix })
+        return await this.post(matrix)
     }
 }

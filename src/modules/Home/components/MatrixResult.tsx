@@ -1,26 +1,28 @@
-import { Result } from "@/common/interfaces/matrix";
 import React from "react";
+import {Statistic} from "@/common/interfaces/statistic";
 
-const MatrixResult = ({ type, result }: MatrixResultProps) => {
-  if (!result) return null;
+const MatrixResult = ({ type, statistic }: MatrixResultProps) => {
+  if (!statistic) return null
+
+  const {max_value, min_value, average, total_sum, is_diagonal} = statistic
 
   return (
     <div className="border p-4 rounded-lg">
-      <p className="font-bold mb-1">Resultado {type}:</p>
+      <p className="font-bold mb-2">Resultado {type}:</p>
       <div className="grid md:grid-cols-2">
-        <p>Valor máximo: {result.valor_maximo}</p>
-        <p>Valor mínimo: {result.valor_minimo}</p>
-        <p>Promedio: {result.promedio}</p>
-        <p>Suma total: {result.suma_total}</p>
-        <p>Matriz diagonal: {result.matriz_diagonal}</p>
+        <p><strong>Valor máximo:</strong> {max_value}</p>
+        <p><strong>Valor mínimo:</strong> {min_value}</p>
+        <p><strong>Promedio:</strong> {average}</p>
+        <p><strong>Suma total:</strong> {total_sum}</p>
+        <p><strong>Matriz diagonal:</strong> {is_diagonal ? "Si" : "No"}</p>
       </div>
     </div>
-  );
-};
+  )
+}
 
 type MatrixResultProps = {
   type: string;
-  result: Result;
-};
+  statistic: Statistic
+}
 
 export default MatrixResult;

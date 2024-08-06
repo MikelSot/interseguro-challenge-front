@@ -4,7 +4,7 @@ import MatrixForm from "./components/MatrixForm";
 import MatrixResult from "./components/MatrixResult";
 
 const HomeView = () => {
-  const { resultQ, resultR } = useMatrixContext();
+  const {  response } = useMatrixContext();
 
   return (
     <main className="max-w-7xl min-h-screen m-auto p-8 flex flex-col justify-center items-center gap-6">
@@ -13,8 +13,8 @@ const HomeView = () => {
         <Matrix />
       </div>
       <div className="grid lg:grid-cols-2 place-content-center gap-10 w-full text-sm">
-        <MatrixResult type="Q" result={resultQ} />
-        <MatrixResult type="R" result={resultR} />
+        <MatrixResult type="Q" statistic={response?.data?.statistic?.statistic_q} />
+        <MatrixResult type="R" statistic={response?.data?.statistic?.statistic_r} />
       </div>
     </main>
   );

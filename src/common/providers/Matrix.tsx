@@ -1,18 +1,12 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import { MatrixData, Result } from "../interfaces/matrix";
+import {Challenge} from "@/common/interfaces/challenge";
 
 const MatrixContext = createContext({} as MatrixContextProps);
 
 const MatrixProvider = ({ children }: MatrixProps) => {
   const [columns, setColumns] = useState(0);
   const [rows, setRows] = useState(0);
-  const [data, setData] = useState<MatrixData>({} as MatrixData);
-
-  const matrixQ = data.q;
-  const matrixR = data.r;
-
-  const resultQ = data.result_Q;
-  const resultR = data.result_R;
+  const [response, setResponse] = useState({} as Challenge);
 
   return (
     <MatrixContext.Provider
@@ -21,12 +15,8 @@ const MatrixProvider = ({ children }: MatrixProps) => {
         setColumns,
         rows,
         setRows,
-        data,
-        setData,
-        matrixQ: matrixQ,
-        matrixR: matrixR,
-        resultQ,
-        resultR,
+        response,
+        setResponse
       }}
     >
       {children}
@@ -43,12 +33,8 @@ type MatrixContextProps = {
   setColumns: (columns: number) => void;
   rows: number;
   setRows: (rows: number) => void;
-  data: MatrixData;
-  setData: (data: MatrixData) => void;
-  matrixQ: number[][];
-  matrixR: number[][];
-  resultQ: Result;
-  resultR: Result;
+  response: Challenge
+  setResponse: (response: Challenge) => void;
 };
 
 export const useMatrixContext = () => useContext(MatrixContext);

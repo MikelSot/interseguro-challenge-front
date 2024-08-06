@@ -3,7 +3,7 @@ import jsCookie from "js-cookie"
 import {TOKEN_NAME} from "@/common/constants/cookies"
 import axios, {AxiosResponse} from "axios";
 
-const API_GATEWAY = process.env.API_GATEWAY || 'https://interseguro-challenge-gateway.onrender.com'
+const API_GATEWAY = process.env.API_GATEWAY || 'interseguro-challenge-gateway.onrender.com'
 
 class HttpRequest implements HttpRequestParam {
     constructor(

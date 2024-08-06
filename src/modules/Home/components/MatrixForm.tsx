@@ -5,23 +5,21 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { GenerateBoardFormValues } from "../HomeView";
-import { GenerateBoardFormSchema } from "../schemas/generateBoardFormSchema";
+import { MatrixFormSchema } from "../schemas/From";
 
 const MatrixForm = () => {
-  const { setColumns, setRows, matrixQ, matrixR } = useMatrixContext();
+  const { setColumns, setRows, response } = useMatrixContext();
 
   const {
     register,
     handleSubmit: onSubmit,
     formState: { errors },
   } = useForm<GenerateBoardFormValues>({
-    resolver: joiResolver(GenerateBoardFormSchema),
+    resolver: joiResolver(MatrixFormSchema),
     mode: "onChange",
   });
 
-  const handleSubmit = async (
-    values: GenerateBoardFormValues
-  ): Promise<void> => {
+  const handleSubmit = async (values: GenerateBoardFormValues) => {
     if (!values.columns || !values.rows) {
       toast.error("Ingresa los valores positivos de columnas y filas");
       return;
@@ -30,6 +28,8 @@ const MatrixForm = () => {
     setColumns(values.columns);
     setRows(values.rows);
   };
+
+
 
   const formatMatrix = (matrix: number[][]): string => {
     return `[\n  ${matrix
@@ -71,19 +71,19 @@ const MatrixForm = () => {
         />
       </form>
       <div className="grid grid-cols-2 border rounded divide-x overflow-auto text-sm">
-        {matrixQ && (
+        {response?.data?.factorize?.q && (
           <div className="p-4 overflow-auto">
             <h3 className="font-semibold">Factorización Q</h3>
             <pre style={{ whiteSpace: "pre" }}>
-              <code>{`q: ${formatMatrix(matrixQ)}`}</code>
+              <code>{`q: ${formatMatrix(response?.data?.factorize?.q)}`}</code>
             </pre>
           </div>
         )}
-        {matrixR && (
+        {response?.data?.factorize?.r && (
           <div className="p-4 overflow-auto">
             <h3 className="font-semibold">Factorización R</h3>
             <pre style={{ whiteSpace: "pre" }}>
-              <code>{`r: ${formatMatrix(matrixR)}`}</code>
+              <code>{`r: ${formatMatrix(response?.data?.factorize?.r)}`}</code>
             </pre>
           </div>
         )}

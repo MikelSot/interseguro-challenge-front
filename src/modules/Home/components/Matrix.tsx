@@ -1,18 +1,23 @@
-import ButtonBase from "@/common/components/atoms/buttons/ButtonBase";
-import InputForm from "@/common/components/atoms/form/InputForm";
-import { useMatrixContext } from "@/common/providers/Matrix";
-import classNames from "classnames";
-import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import ButtonBase from "@/common/components/atoms/buttons/ButtonBase"
+import InputForm from "@/common/components/atoms/form/InputForm"
+import { useMatrixContext } from "@/common/providers/Matrix"
+import classNames from "classnames"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
+import {validateEmptyMatrix} from "@/common/helpers/matrix"
+import {useMutation} from "@tanstack/react-query"
+import {Matrix as MatrixProps} from "@/common/interfaces/matrix"
+import {challenge} from "@/common/api/api-gateway";
+
 
 const Matrix = () => {
-  const [dataNumbers, setDataNumbers] = useState<number[][]>([]);
+  const [matrix, setMatrix] = useState<number[][]>([]);
 
-  const { columns, rows, setData } = useMatrixContext();
+  const { columns, rows, setResponse } = useMatrixContext();
 
   useEffect(() => {
     const newData = Array.from({ length: rows }, () => Array(columns).fill(0));
-    setDataNumbers(newData);
+    setMatrix(newData);
   }, [rows, columns]);
 
   const handleChange = (
@@ -20,81 +25,39 @@ const Matrix = () => {
     columnIndex: number,
     value: number
   ) => {
-    const newData = [...dataNumbers];
-    newData[rowIndex][columnIndex] = value;
-    setDataNumbers(newData);
-  };
+    const newData = [...matrix]
+    newData[rowIndex][columnIndex] = value
 
-  const validateData = () => {
-    for (const row of dataNumbers) {
-      for (const cell of row) {
-        if (!cell) {
-          return false;
+    setMatrix(newData)
+  }
+
+
+  const {mutate, isPending, isSuccess} = useMutation(
+      {
+        mutationFn: async (data: MatrixProps) =>await challenge(data),
+        onSuccess: (data) => {
+          toast.success("Calculado correctamente 🎉")
+          setResponse(data)
+        },
+        onError: () => {
+          toast.error("Error al calcular la factorización")
         }
       }
-    }
-    return true;
-  };
+  )
 
   const handleSubmit = async () => {
-    if (!rows || !columns || !validateData()) {
-      toast.error("Ingresa todos los valores de la matriz");
-      return;
+    if (!rows || !columns || !validateEmptyMatrix(matrix)) {
+      toast.error("Ingresa todos los valores de la matriz")
+
+      return
     }
 
-    try {
-      const testPetition = new Promise((resolve) => setTimeout(resolve, 3000));
-      // post("calcular-factorización", dataNumbers) // dataNumbers is the data to send to the server
+    mutate({matrix: matrix})
+  }
 
-      toast
-        .promise(testPetition, {
-          pending: "Calculando ...",
-          success: "Calculado correctamente 🎉",
-          error: "Error al calcular la factorización",
-        })
-        .then((result) => {
-          const data = {
-            q: [
-              [1, 2, 3],
-              [4, 5, 6],
-              [7, 8, 9],
-              [10, 11, 12],
-              [13, 14, 15],
-              [16, 17, 18],
-            ],
-            r: [
-              [1, 2, 3, 4, 5, 6, 7],
-              [8, 9, 10, 11, 12, 13, 14],
-              [15, 16, 17, 18, 19, 20, 21],
-              [22, 23, 24, 25, 26, 27, 28],
-            ],
-            result_Q: {
-              valor_maximo: 28,
-              valor_minimo: 1,
-              promedio: 14.5,
-              suma_total: 14,
-              matriz_diagonal: 14.5,
-            },
-            result_R: {
-              valor_maximo: 28,
-              valor_minimo: 1,
-              promedio: 14.5,
-              suma_total: 14,
-              matriz_diagonal: 14.5,
-            },
-          };
-
-          setData(data); // setData(result); // result is the response from the server
-        })
-        .finally(() => {
-          setDataNumbers(
-            Array.from({ length: rows }, () => Array(columns).fill(""))
-          );
-        });
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  if (isPending) {
+    toast.info("Calculando ...")
+  }
 
   return (
     <div className="h-96 flex flex-col border p-1 rounded w-full">

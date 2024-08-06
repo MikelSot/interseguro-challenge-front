@@ -1,49 +1,51 @@
-import { useRouter } from "next/router"
-import { ReactNode, useEffect, useState } from "react"
+"use client"
+
+import {useRouter} from "next/navigation"
+import {ReactNode, useEffect} from "react"
 import jsCookie from "js-cookie";
 import {TOKEN_NAME} from "@/common/constants/cookies";
 import {PRIVATE_ROUTER, PUBLIC_ROUTES} from "@/common/constants/router";
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
+
+
+const queryClient = new QueryClient()
+
 
 const AuthWrapper = ({ children }: AuthWrapperProps) => {
-  const router = useRouter();
-
-  const [isLogin, setIsLogin] = useState(false)
-
+  const router = useRouter()
   const token = jsCookie.get(TOKEN_NAME as string)
+
 
   useEffect(() => {
     if (token) {
-      setIsLogin(true)
+      router.push('/')
 
       return
     }
 
-    setIsLogin(false)
-  }, [token])
+    redirect()
+  }, [router])
 
 
-  console.log("isLogin")
-  console.log(isLogin)
-  console.log(token)
+  const redirect = () => {
+    const path = window?.location?.pathname
 
+    if (PRIVATE_ROUTER.includes(path)) {
+      router.push('/login')
+    }
 
-  const path = router.asPath
-
-  if (!isLogin && PRIVATE_ROUTER.includes(path)) {
-    router.push('/login')
+    if (PUBLIC_ROUTES.includes(path)) {
+      router.push(path)
+    }
   }
 
-
-  if (!isLogin && PUBLIC_ROUTES.includes(path)) {
-    router.push(path)
-  }
-
-
-  if (isLogin) {
-    return <div>Loading...</div>
-  }
-
-  return <>{children}</>
+  return (
+      <>
+        <QueryClientProvider client={queryClient}>
+        {children}
+        </QueryClientProvider>
+      </>
+  )
 }
 
 type AuthWrapperProps = {

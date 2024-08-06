@@ -91,8 +91,6 @@ const RegisterForm = () => {
           type="submit"
           className="col-span-full hover:bg-blue-600 dark:hover:bg-blue-400 w-full transition-colors"
           text="Registrarse"
-          // text={isLoading ? "Cargando..." : "Iniciar sesión"}
-          // disabled={isLoading}
         />
       </form>
     </>
